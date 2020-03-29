@@ -7,7 +7,7 @@
         <div class="column is-half-desktop">
             <h2 class="is-size-3">Sign Up</h2>
 
-            <form method="post" action="{{ url_for('sign_up') }}">
+            <form method="post" action="{{ url_for('auth.sign_up') }}">
                 <div class="field">
                     <label class="label" for="username">Username</label>
                     <div class="control">
@@ -27,7 +27,7 @@
                         <input type="submit" value="Sign Up" class="button is-link"/>
                     </div>
                     <div class="control">
-                        <a href="{{ url_for('log_in') }}" class="button is-text">
+                        <a href="{{ url_for('auth.log_in') }}" class="button is-text">
                             Already have an account? Log In.
                         </a>
                     </div>
