@@ -14,6 +14,7 @@ def sign_up():
         username = request.form['username']
         password = request.form['password']
         error = None
+
         if not username:
             error = 'Username is required'
         elif not password:
@@ -54,7 +55,7 @@ def log_in():
             flash('Welcome to the notes app', 'success')
             session.clear()
             session['user_id'] = user.id
-            return redirect(url_for('notes'))
+            return redirect(url_for('notes.notes'))
 
         flash(error, 'error')
 

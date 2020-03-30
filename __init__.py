@@ -1,8 +1,7 @@
 import os
 
-from flask import Flask, render_template, redirect, url_for, request, session, flash
+from flask import Flask, session, g
 from flask_migrate import Migrate
-from werkzeug.security import generate_password_hash, check_password_hash
 
 
 def create_app(test_config=None):
@@ -18,18 +17,22 @@ def create_app(test_config=None):
     else:
         app.config.from_mapping(test_config)
 
-    from .models import db
+    from .models import db, User
     from .auth import bp as auth_module
+    from .notes import bp as notes_module
+
     Migrate(app, db)
     db.init_app(app)
-
     app.register_blueprint(auth_module)
+    app.register_blueprint(notes_module)
 
-    @app.route('/')
-    def notes():
-        if not session.get('user_id'):
-            return redirect(url_for('auth.log_in'))
+    @app.before_request
+    def load_user():
+        user_id = session.get('user_id')
 
-        return 'Notes view'
+        if user_id:
+            g.user = User.query.get(user_id)
+        else:
+            g.user = None
 
     return app
