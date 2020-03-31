@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, session, g
+from flask import Flask, session, g, redirect, url_for
 from flask_migrate import Migrate
 
 
@@ -18,8 +18,8 @@ def create_app(test_config=None):
         app.config.from_mapping(test_config)
 
     from .models import db, User
-    from .auth import bp as auth_module
-    from .notes import bp as notes_module
+    from .web.controllers.auth import bp as auth_module
+    from .web.controllers.notes import bp as notes_module
 
     Migrate(app, db)
     db.init_app(app)
@@ -34,5 +34,9 @@ def create_app(test_config=None):
             g.user = User.query.get(user_id)
         else:
             g.user = None
+
+    @app.route('/')
+    def index():
+        return redirect(url_for('notes.notes'))
 
     return app

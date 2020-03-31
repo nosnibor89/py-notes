@@ -13,6 +13,7 @@ python-dotenv = "*"
 flask-sqlalchemy = "*"
 flask-migrate = "*"
 werkzeug = "*"
+mistune = "*"
 
 [requires]
 python_version = "3.7"
