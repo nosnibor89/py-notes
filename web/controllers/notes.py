@@ -38,3 +38,38 @@ def create():
         flash(error, 'error')
 
     return render_template('note_create.html')
+
+
+@bp.route('/<int:note_id>/edit', methods=['GET', 'PATCH', 'POST'])
+@requires_login
+def edit(note_id):
+    note = Note.query.filter_by(user_id=g.user.id, id=note_id).first_or_404()
+    if request.method in ['PATCH', 'POST']:
+        title = request.form['title']
+        body = request.form['body']
+        error = None
+
+        if not title:
+            error = 'Title is required'
+
+        if not error:
+            note.title = title
+            note.body = body
+            db.session.commit()
+            flash(f'Note "{title}" was updatedd successfully', 'success')
+            return redirect(url_for('notes.notes'))
+
+        flash(error, 'error')
+
+    return render_template('note_update.html', note=note)
+
+
+@bp.route('/<int:note_id>/delete', methods=['DELETE', 'GET'])
+@requires_login
+def delete(note_id):
+    note = Note.query.filter_by(user_id=g.user.id, id=note_id).first_or_404()
+    db.session.delete(note)
+    db.session.commit()
+
+    flash(f"Successfully deleted note: '{note.title}'", 'success')
+    return redirect(url_for('notes.notes'))

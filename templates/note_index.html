@@ -12,10 +12,12 @@
             <div class="message-header">
                 <p>{{ note.title }}</p>
                 <div>
-                    <a class="button is-primary is-small has-text-weight-bold" href="#">
+                    <a class="button is-primary is-small has-text-weight-bold"
+                       href="{{ url_for('notes.edit', note_id = note.id) }}">
                         Edit Note
                     </a>
-                    <a class="button is-danger is-small has-text-weight-bold" href="#">
+                    <a class="button is-danger is-small has-text-weight-bold"
+                       href="{{ url_for('notes.delete', note_id=note.id) }}">
                         Delete Note
                     </a>
                 </div>

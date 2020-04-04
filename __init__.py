@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, session, g, redirect, url_for
+from flask import Flask, session, g, redirect, url_for, render_template
 from flask_migrate import Migrate
 
 
@@ -25,6 +25,10 @@ def create_app(test_config=None):
     db.init_app(app)
     app.register_blueprint(auth_module)
     app.register_blueprint(notes_module)
+
+    @app.errorhandler(404)
+    def page_not_found(error):
+        return render_template('404.html'), 404
 
     @app.before_request
     def load_user():
